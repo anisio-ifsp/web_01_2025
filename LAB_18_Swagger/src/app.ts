@@ -1,16 +1,14 @@
-import express from 'express';
-import { cadastrarProduto, atualizarProduto, deletarProduto, filtrarProduto, listarTodosProduto } from './controller/ProductController';
+import express from "express"
+import { ProductController } from "./controller/ProductController"
 
-const app = express();
 
-const PORT = 3040;
+const productController = new ProductController()
 
-app.use(express.json());
+const app = express()
 
-app.post("/api/product", cadastrarProduto)
-app.put("/api/product", atualizarProduto)
-app.delete("/api/product", deletarProduto)
-app.get("/api/product", filtrarProduto)
-app.get("/api/product/all", listarTodosProduto)
+const PORT = process.env.PORT ?? 3000
+app.use(express.json())
 
-app.listen(PORT, ()=> console.log("API online na porta: " + PORT));
+app.post("/api/produto", productController.cadastrarProduto.bind(productController))
+
+app.listen(PORT, () => console.log("Servidor rodando em http://localhost:3000"))
