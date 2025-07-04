@@ -5,8 +5,7 @@ const dbConfig = {
     port: 3306,
     user: 'root',
     password: 'mysql',
-    database: 'vendas'
-    
+    database: 'estoque'
 };
 
 const mysqlConnection: Connection = mysql.createConnection(dbConfig);
@@ -19,17 +18,15 @@ mysqlConnection.connect((err) => {
     console.log('Conexão bem-sucedida com o banco de dados MySQL');
 });
 
-export function executarComandoSQL(query: string, valores: any[]): Promise<any>{
+export function executarComandoSQL(query: string, valores: any[]): Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
-            mysqlConnection.query(query, valores, (err, resultado) => {
+            mysqlConnection.query(query, valores, (err, resultado: any) => {
                 if (err) {
-                    console.error('Erro ao executar a query.', err);
-                    reject(err)
+                    reject(err);
                 }
-                resolve(resultado)
-            
+                resolve(resultado);
             });
-    }
+        }
     )
 }

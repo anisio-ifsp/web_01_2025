@@ -1,14 +1,20 @@
-import express from "express"
-import { ProductController } from "./controller/ProductController"
+import express from 'express';
+import { RegisterRoutes } from './route/routes';
+import { setupSwagger } from './config/swagger';
 
+const app = express();
 
-const productController = new ProductController()
+const PORT = 3040;
 
-const app = express()
+app.use(express.json());
 
-const PORT = process.env.PORT ?? 3000
-app.use(express.json())
+const apiRouter = express.Router();
+RegisterRoutes(apiRouter);
 
-app.post("/api/produto", productController.cadastrarProduto.bind(productController))
+app.use('/api', apiRouter);
 
-app.listen(PORT, () => console.log("Servidor rodando em http://localhost:3000"))
+RegisterRoutes(app);
+
+setupSwagger(app);
+
+app.listen(PORT, ()=> console.log("API online na porta: " + PORT));
